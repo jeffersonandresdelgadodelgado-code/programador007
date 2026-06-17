@@ -4,14 +4,16 @@
 import { useState } from 'react';
 import { IconX, IconEye, IconEyeOff } from './Icons';
 
-// Campo de contrasena con boton para mostrar/ocultar el texto
-export function PasswordInput({ value, onChange, placeholder, autoFocus, required }) {
+// Campo de contrasena con boton para mostrar/ocultar el texto.
+// light=true -> fondo blanco con letra oscura y en negrita (para el login oscuro).
+export function PasswordInput({ value, onChange, placeholder, autoFocus, required, light }) {
   const [show, setShow] = useState(false);
+  const extra = light ? ' !bg-white !text-slate-900 font-semibold placeholder:text-slate-400' : '';
   return (
     <div className="relative">
       <input
         type={show ? 'text' : 'password'}
-        className="input pr-11"
+        className={`input pr-11${extra}`}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
@@ -22,7 +24,7 @@ export function PasswordInput({ value, onChange, placeholder, autoFocus, require
         type="button"
         onClick={() => setShow((s) => !s)}
         title={show ? 'Ocultar' : 'Mostrar'}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand"
+        className={`absolute right-3 top-1/2 -translate-y-1/2 hover:text-brand ${light ? 'text-slate-500' : 'text-slate-400'}`}
       >
         {show ? <IconEyeOff className="w-5 h-5" /> : <IconEye className="w-5 h-5" />}
       </button>

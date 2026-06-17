@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS events (
   event_time    TEXT,                          -- hora
   location      TEXT,
   capacity      INTEGER DEFAULT 0,             -- 0 = sin limite
+  image         TEXT,                          -- imagen del evento (data URL base64, opcional)
   created_at    TEXT    NOT NULL DEFAULT (datetime('now'))
 );
 

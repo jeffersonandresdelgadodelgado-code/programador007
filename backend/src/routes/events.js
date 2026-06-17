@@ -42,9 +42,9 @@ router.post('/', requireRole('admin'), async (req, res) => {
   const b = req.body || {};
   if (!b.title || !b.event_date) return res.status(400).json({ error: 'Titulo y fecha son obligatorios' });
   const info = await db.prepare(`
-    INSERT INTO events (title, description, type, event_date, event_time, location, capacity)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `).run(b.title, b.description || null, b.type || 'Competencia', b.event_date, b.event_time || null, b.location || null, b.capacity || 0);
+    INSERT INTO events (title, description, type, event_date, event_time, location, capacity, image)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(b.title, b.description || null, b.type || 'Competencia', b.event_date, b.event_time || null, b.location || null, b.capacity || 0, b.image || null);
   res.status(201).json(await db.prepare('SELECT * FROM events WHERE id = ?').get(info.lastInsertRowid));
 });
 
@@ -53,9 +53,10 @@ router.put('/:id', requireRole('admin'), async (req, res) => {
   const b = req.body || {};
   const e = await db.prepare('SELECT * FROM events WHERE id = ?').get(req.params.id);
   if (!e) return res.status(404).json({ error: 'Evento no encontrado' });
-  await db.prepare(`UPDATE events SET title=?, description=?, type=?, event_date=?, event_time=?, location=?, capacity=? WHERE id=?`)
+  await db.prepare(`UPDATE events SET title=?, description=?, type=?, event_date=?, event_time=?, location=?, capacity=?, image=? WHERE id=?`)
     .run(b.title ?? e.title, b.description ?? e.description, b.type ?? e.type, b.event_date ?? e.event_date,
-         b.event_time ?? e.event_time, b.location ?? e.location, b.capacity ?? e.capacity, e.id);
+         b.event_time ?? e.event_time, b.location ?? e.location, b.capacity ?? e.capacity,
+         b.image !== undefined ? b.image : e.image, e.id);
   res.json(await db.prepare('SELECT * FROM events WHERE id = ?').get(e.id));
 });
 

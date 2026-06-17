@@ -31,6 +31,15 @@ export const client = createClient({ url, authToken });
 const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf-8');
 await client.executeMultiple(schema);
 
+// --- Migraciones suaves para tablas que ya existian ---
+// Agrega columnas nuevas si faltan (ignora el error si ya estan).
+const migrations = [
+  'ALTER TABLE events ADD COLUMN image TEXT',
+];
+for (const sql of migrations) {
+  try { await client.execute(sql); } catch { /* la columna ya existe */ }
+}
+
 // ------------------------------------------------------------
 //  Helpers internos
 // ------------------------------------------------------------

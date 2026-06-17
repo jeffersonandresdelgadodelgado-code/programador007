@@ -77,12 +77,13 @@ export default function Login() {
               <p className="text-sm text-slate-400">Ingresa con tu numero de cedula.</p>
               <div>
                 <label className="label text-slate-300">Cedula</label>
-                <input className="input" value={cedula} onChange={(e) => setCedula(e.target.value)}
+                <input className="input !bg-white !text-slate-900 font-semibold placeholder:text-slate-400"
+                       value={cedula} onChange={(e) => setCedula(e.target.value)}
                        placeholder="Número de cédula" autoFocus required />
               </div>
               <div>
                 <label className="label text-slate-300">Contrasena</label>
-                <PasswordInput value={password} onChange={(e) => setPwd(e.target.value)} placeholder="Tu contrasena" />
+                <PasswordInput light value={password} onChange={(e) => setPwd(e.target.value)} placeholder="Tu contrasena" />
                 <p className="mt-1 text-xs text-slate-500">Si es tu primera vez, deja la contrasena vacia y continua.</p>
               </div>
               {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-300">{error}</p>}
@@ -94,11 +95,11 @@ export default function Login() {
               <p className="text-sm text-slate-400">Primer ingreso para la cedula <b>{cedula}</b>.</p>
               <div>
                 <label className="label text-slate-300">Nueva contrasena</label>
-                <PasswordInput value={password} onChange={(e) => setPwd(e.target.value)} autoFocus required />
+                <PasswordInput light value={password} onChange={(e) => setPwd(e.target.value)} autoFocus required />
               </div>
               <div>
                 <label className="label text-slate-300">Confirmar contrasena</label>
-                <PasswordInput value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
+                <PasswordInput light value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
               </div>
               {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-300">{error}</p>}
               <button className="btn-primary w-full" disabled={loading}>{loading ? 'Guardando...' : 'Crear y entrar'}</button>
