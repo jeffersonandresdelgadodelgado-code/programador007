@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import api from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
-import { Spinner, fdate } from '../../components/ui';
+import { Spinner, fdate, PasswordInput } from '../../components/ui';
 import { IconUser } from '../../components/Icons';
 
 function Row({ label, value }) {
@@ -67,9 +67,9 @@ export default function ClientProfile() {
       <div className="card p-6 max-w-md">
         <h3 className="mb-4 font-bold">Cambiar contrasena</h3>
         <form onSubmit={changePwd} className="space-y-3">
-          <div><label className="label">Contrasena actual</label><input type="password" className="input" value={pwd.currentPassword} onChange={(e) => setPwd((p) => ({ ...p, currentPassword: e.target.value }))} /></div>
-          <div><label className="label">Nueva contrasena</label><input type="password" className="input" value={pwd.newPassword} onChange={(e) => setPwd((p) => ({ ...p, newPassword: e.target.value }))} required /></div>
-          <div><label className="label">Confirmar</label><input type="password" className="input" value={pwd.confirm} onChange={(e) => setPwd((p) => ({ ...p, confirm: e.target.value }))} required /></div>
+          <div><label className="label">Contrasena actual</label><PasswordInput value={pwd.currentPassword} onChange={(e) => setPwd((p) => ({ ...p, currentPassword: e.target.value }))} /></div>
+          <div><label className="label">Nueva contrasena</label><PasswordInput value={pwd.newPassword} onChange={(e) => setPwd((p) => ({ ...p, newPassword: e.target.value }))} required /></div>
+          <div><label className="label">Confirmar</label><PasswordInput value={pwd.confirm} onChange={(e) => setPwd((p) => ({ ...p, confirm: e.target.value }))} required /></div>
           {msg && <p className={`text-sm ${msg.ok ? 'text-emerald-500' : 'text-red-500'}`}>{msg.text}</p>}
           <button className="btn-primary w-full">Actualizar contrasena</button>
         </form>

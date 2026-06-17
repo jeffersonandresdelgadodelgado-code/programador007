@@ -14,6 +14,7 @@ import Routines from './pages/Routines';
 import Events from './pages/Events';
 import Products from './pages/Products';
 import Attendance from './pages/Attendance';
+import Account from './pages/Account';
 
 // Paginas del cliente
 import ClientHome from './pages/client/ClientHome';
@@ -47,6 +48,7 @@ export default function App() {
       <Route path="/rutinas" element={<Protected role="admin"><Routines /></Protected>} />
       <Route path="/productos" element={<Protected role="admin"><Products /></Protected>} />
       <Route path="/asistencia" element={<Protected role="admin"><Attendance /></Protected>} />
+      <Route path="/cuenta" element={<Protected role="admin"><Account /></Protected>} />
 
       {/* ---- Rutas del cliente ---- */}
       <Route path="/perfil" element={<Protected role="cliente"><ClientProfile /></Protected>} />

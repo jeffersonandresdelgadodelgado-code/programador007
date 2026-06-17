@@ -20,6 +20,7 @@ const adminLinks = [
   { to: '/eventos', label: 'Eventos', icon: IconCalendar },
   { to: '/productos', label: 'Productos', icon: IconBox },
   { to: '/asistencia', label: 'Asistencia', icon: IconCheck },
+  { to: '/cuenta', label: 'Mi cuenta', icon: IconUser },
 ];
 const clientLinks = [
   { to: '/', label: 'Mi inicio', icon: IconDashboard, end: true },

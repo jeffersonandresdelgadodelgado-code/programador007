@@ -1,7 +1,34 @@
 // ============================================================
 //  Pequenos componentes de interfaz reutilizables
 // ============================================================
-import { IconX } from './Icons';
+import { useState } from 'react';
+import { IconX, IconEye, IconEyeOff } from './Icons';
+
+// Campo de contrasena con boton para mostrar/ocultar el texto
+export function PasswordInput({ value, onChange, placeholder, autoFocus, required }) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="relative">
+      <input
+        type={show ? 'text' : 'password'}
+        className="input pr-11"
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        required={required}
+      />
+      <button
+        type="button"
+        onClick={() => setShow((s) => !s)}
+        title={show ? 'Ocultar' : 'Mostrar'}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand"
+      >
+        {show ? <IconEyeOff className="w-5 h-5" /> : <IconEye className="w-5 h-5" />}
+      </button>
+    </div>
+  );
+}
 
 // Ventana modal centrada
 export function Modal({ open, onClose, title, children, width = 'max-w-lg' }) {

@@ -8,6 +8,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { PasswordInput } from '../components/ui';
 
 export default function Login() {
   const { login, setPassword } = useAuth();
@@ -81,9 +82,8 @@ export default function Login() {
               </div>
               <div>
                 <label className="label text-slate-300">Contrasena</label>
-                <input type="password" className="input" value={password}
-                       onChange={(e) => setPwd(e.target.value)} placeholder="Tu contrasena" />
-                <p className="mt-1 text-xs text-slate-500">Primer ingreso? Deja la clave vacia y continua.</p>
+                <PasswordInput value={password} onChange={(e) => setPwd(e.target.value)} placeholder="Tu contrasena" />
+                <p className="mt-1 text-xs text-slate-500">Si es tu primera vez, deja la contrasena vacia y continua.</p>
               </div>
               {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-300">{error}</p>}
               <button className="btn-primary w-full" disabled={loading}>{loading ? 'Ingresando...' : 'Ingresar'}</button>
@@ -94,13 +94,11 @@ export default function Login() {
               <p className="text-sm text-slate-400">Primer ingreso para la cedula <b>{cedula}</b>.</p>
               <div>
                 <label className="label text-slate-300">Nueva contrasena</label>
-                <input type="password" className="input" value={password}
-                       onChange={(e) => setPwd(e.target.value)} autoFocus required />
+                <PasswordInput value={password} onChange={(e) => setPwd(e.target.value)} autoFocus required />
               </div>
               <div>
                 <label className="label text-slate-300">Confirmar contrasena</label>
-                <input type="password" className="input" value={confirm}
-                       onChange={(e) => setConfirm(e.target.value)} required />
+                <PasswordInput value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
               </div>
               {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-300">{error}</p>}
               <button className="btn-primary w-full" disabled={loading}>{loading ? 'Guardando...' : 'Crear y entrar'}</button>
