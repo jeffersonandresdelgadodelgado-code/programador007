@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Estilos base y utilidades reutilizables (modo claro/oscuro)
+   ============================================================ */
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body {
+    @apply bg-slate-100 text-slate-800 dark:bg-brand-900 dark:text-slate-100;
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  /* Tarjetas */
+  .card {
+    @apply rounded-2xl bg-white dark:bg-slate-800/60 shadow-sm border border-slate-200 dark:border-slate-700/60;
+  }
+  /* Botones */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-semibold transition
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary { @apply btn bg-brand text-white hover:bg-brand-500 active:scale-[0.98]; }
+  .btn-ghost   { @apply btn bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-600; }
+  .btn-danger  { @apply btn bg-red-500 text-white hover:bg-red-600; }
+  /* Campos de formulario */
+  .input, .select {
+    @apply w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900
+           px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-brand/60 focus:border-brand;
+  }
+  .label { @apply mb-1 block text-sm font-medium text-slate-600 dark:text-slate-300; }
+  /* Etiquetas de estado */
+  .badge { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+  .badge-ok   { @apply badge bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300; }
+  .badge-warn { @apply badge bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300; }
+  .badge-bad  { @apply badge bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300; }
+}
+
+/* Barra de scroll discreta */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { @apply bg-slate-400/40 rounded-full; }
