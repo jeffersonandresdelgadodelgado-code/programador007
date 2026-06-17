@@ -77,7 +77,7 @@ export default function Login() {
               <div>
                 <label className="label text-slate-300">Cedula</label>
                 <input className="input" value={cedula} onChange={(e) => setCedula(e.target.value)}
-                       placeholder="Ej: 1001 (o 'admin')" autoFocus required />
+                       placeholder="Número de cédula" autoFocus required />
               </div>
               <div>
                 <label className="label text-slate-300">Contrasena</label>
