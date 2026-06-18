@@ -21,6 +21,7 @@ import attendanceRoutes from './routes/attendance.js';
 import dashboardRoutes from './routes/dashboard.js';
 import wodRoutes from './routes/wods.js';
 import recordRoutes from './routes/records.js';
+import classRoutes from './routes/classes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -43,6 +44,7 @@ app.use('/api/attendance', attendanceRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/wods', wodRoutes);
 app.use('/api/records', recordRoutes);
+app.use('/api/classes', classRoutes);
 
 // Salud del servicio
 app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'box-motivacion' }));

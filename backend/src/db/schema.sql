@@ -219,8 +219,34 @@ CREATE TABLE IF NOT EXISTS records (
 );
 
 -- ------------------------------------------------------------
+--  CLASES (horario semanal) + RESERVAS
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS classes (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  name          TEXT    NOT NULL,                 -- "CrossFit", "Funcional", "Halterofilia"
+  weekday       INTEGER NOT NULL,                 -- 0=Domingo .. 6=Sabado (getDay)
+  time          TEXT    NOT NULL,                 -- "06:00"
+  capacity      INTEGER NOT NULL DEFAULT 12,      -- cupos
+  coach         TEXT,                             -- entrenador (opcional)
+  active        INTEGER NOT NULL DEFAULT 1,
+  created_at    TEXT    NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS class_bookings (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  class_id      INTEGER NOT NULL,
+  client_id     INTEGER NOT NULL,
+  session_date  TEXT    NOT NULL,                 -- fecha concreta de la clase (yyyy-mm-dd)
+  created_at    TEXT    NOT NULL DEFAULT (datetime('now')),
+  UNIQUE (class_id, client_id, session_date),
+  FOREIGN KEY (class_id)  REFERENCES classes(id) ON DELETE CASCADE,
+  FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+);
+
+-- ------------------------------------------------------------
 --  Indices utiles para reportes
 -- ------------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_classbk_session     ON class_bookings(class_id, session_date);
 CREATE INDEX IF NOT EXISTS idx_wods_date           ON wods(wod_date);
 CREATE INDEX IF NOT EXISTS idx_wodresults_wod       ON wod_results(wod_id);
 CREATE INDEX IF NOT EXISTS idx_records_client       ON records(client_id);

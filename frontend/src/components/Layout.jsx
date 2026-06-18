@@ -9,7 +9,7 @@ import { useTheme } from '../context/ThemeContext';
 import {
   IconDashboard, IconUsers, IconMoney, IconDumbbell, IconChart, IconCalendar,
   IconBox, IconCheck, IconSun, IconMoon, IconLogout, IconMenu, IconX, IconUser,
-  IconFlame, IconTrophy,
+  IconFlame, IconTrophy, IconClock,
 } from './Icons';
 
 // Definicion de los enlaces por rol
@@ -19,6 +19,7 @@ const adminLinks = [
   { to: '/pagos', label: 'Pagos', icon: IconMoney },
   { to: '/rutinas', label: 'Rutinas', icon: IconDumbbell },
   { to: '/wods', label: 'WODs', icon: IconFlame },
+  { to: '/clases', label: 'Clases', icon: IconClock },
   { to: '/eventos', label: 'Eventos', icon: IconCalendar },
   { to: '/productos', label: 'Productos', icon: IconBox },
   { to: '/asistencia', label: 'Asistencia', icon: IconCheck },
@@ -30,6 +31,7 @@ const clientLinks = [
   { to: '/mis-pagos', label: 'Mensualidad', icon: IconMoney },
   { to: '/mis-rutinas', label: 'Mis rutinas', icon: IconDumbbell },
   { to: '/wods', label: 'WOD del día', icon: IconFlame },
+  { to: '/reservar', label: 'Reservar clases', icon: IconClock },
   { to: '/mis-records', label: 'Mis records', icon: IconTrophy },
   { to: '/mi-progreso', label: 'Mi progreso', icon: IconChart },
   { to: '/eventos', label: 'Eventos', icon: IconCalendar },

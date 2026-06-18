@@ -16,7 +16,9 @@ import Products from './pages/Products';
 import Attendance from './pages/Attendance';
 import Account from './pages/Account';
 import Wods from './pages/Wods';
+import Classes from './pages/Classes';
 import ClientRecords from './pages/client/ClientRecords';
+import ClientClasses from './pages/client/ClientClasses';
 
 // Paginas del cliente
 import ClientHome from './pages/client/ClientHome';
@@ -50,6 +52,7 @@ export default function App() {
       <Route path="/rutinas" element={<Protected role="admin"><Routines /></Protected>} />
       <Route path="/productos" element={<Protected role="admin"><Products /></Protected>} />
       <Route path="/asistencia" element={<Protected role="admin"><Attendance /></Protected>} />
+      <Route path="/clases" element={<Protected role="admin"><Classes /></Protected>} />
       <Route path="/cuenta" element={<Protected role="admin"><Account /></Protected>} />
 
       {/* ---- Rutas del cliente ---- */}
@@ -59,8 +62,9 @@ export default function App() {
       <Route path="/mi-progreso" element={<Protected role="cliente"><ClientProgress /></Protected>} />
       <Route path="/tienda" element={<Protected role="cliente"><ClientStore /></Protected>} />
 
-      {/* ---- Cliente: records ---- */}
+      {/* ---- Cliente: records y reservas ---- */}
       <Route path="/mis-records" element={<Protected role="cliente"><ClientRecords /></Protected>} />
+      <Route path="/reservar" element={<Protected role="cliente"><ClientClasses /></Protected>} />
 
       {/* ---- Compartidas ---- */}
       <Route path="/eventos" element={<Protected><Events /></Protected>} />
