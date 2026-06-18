@@ -9,6 +9,9 @@ import { IconPlus, IconAlert, IconTrash, IconChat } from '../components/Icons';
 
 // Mensaje de recordatorio de pago listo para enviar por WhatsApp
 function reminderText(a) {
+  if (!a.due_date) {
+    return `Hola ${a.full_name}, te recordamos que tienes tu mensualidad pendiente en Box Motivacion CrossFit. Te esperamos para activarla. 💪🦍`;
+  }
   const verbo = a.status === 'Vencido' ? 'vencio' : 'vence';
   return `Hola ${a.full_name}, te recordamos que tu mensualidad en Box Motivacion CrossFit ${verbo} el ${fdate(a.due_date)}. Te esperamos para renovarla. 💪🦍`;
 }
@@ -81,8 +84,8 @@ export default function Payments() {
                   <div className="min-w-0">
                     <p className="truncate font-semibold">{a.full_name}</p>
                     <p className="text-xs text-slate-500">
-                      <span className={a.status === 'Vencido' ? 'text-red-500 font-semibold' : 'text-amber-500 font-semibold'}>{a.status}</span>
-                      {' '}· vence {fdate(a.due_date)}
+                      <span className={a.status === 'Vencido' || a.status === 'Sin pagos' ? 'text-red-500 font-semibold' : 'text-amber-500 font-semibold'}>{a.status}</span>
+                      {a.due_date ? ` · vence ${fdate(a.due_date)}` : ' · sin pagos registrados'}
                     </p>
                   </div>
                   {link ? (

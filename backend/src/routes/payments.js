@@ -36,19 +36,23 @@ router.get('/me', async (req, res) => {
   res.json({ ...(await statusFor(clientId)), history });
 });
 
-// GET /api/payments/alerts  -> clientes vencidos o por vencer en <= 5 dias (admin)
+// GET /api/payments/alerts  -> clientes vencidos, por vencer (<=5 dias) o sin pagos (admin)
 router.get('/alerts', requireRole('admin'), async (_req, res) => {
+  // LEFT JOIN: incluye tambien a clientes que nunca han pagado (due_date null)
   const rows = await db.prepare(`
     SELECT c.id, c.full_name, c.phone, MAX(p.due_date) AS due_date
-    FROM clients c JOIN payments p ON p.client_id = c.id
+    FROM clients c LEFT JOIN payments p ON p.client_id = c.id
     GROUP BY c.id
   `).all();
   const t = today();
   const limit = new Date(Date.now() + 5 * 864e5).toISOString().slice(0, 10);
   const alerts = rows
-    .map((r) => ({ ...r, status: r.due_date >= t ? 'Por vencer' : 'Vencido' }))
-    .filter((r) => r.due_date < limit) // vencidos o que vencen pronto
-    .sort((a, b) => a.due_date.localeCompare(b.due_date));
+    .map((r) => ({
+      ...r,
+      status: !r.due_date ? 'Sin pagos' : (r.due_date < t ? 'Vencido' : 'Por vencer'),
+    }))
+    .filter((r) => !r.due_date || r.due_date < limit) // sin pagos, vencidos o que vencen pronto
+    .sort((a, b) => (a.due_date || '').localeCompare(b.due_date || ''));
   res.json(alerts);
 });
 
