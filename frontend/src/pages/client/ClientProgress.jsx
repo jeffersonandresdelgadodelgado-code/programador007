@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import api from '../../api/client';
-import { Modal, Spinner, Empty, fdate, ImageUpload } from '../../components/ui';
+import { Modal, Spinner, Empty, fdate, ImageUpload, ZoomImage } from '../../components/ui';
 import { IconPlus, IconChart } from '../../components/Icons';
 
 const empty = { date: new Date().toISOString().slice(0, 10), weight: '', body_fat: '', muscle_mass: '', waist: '', chest: '', hip: '', arm: '', leg: '', notes: '', photo: '' };
@@ -101,7 +101,7 @@ export default function ClientProgress() {
                       <td className="px-4 py-3 hidden sm:table-cell">{m.waist ?? '-'}</td>
                       <td className="px-4 py-3">
                         {m.photo
-                          ? <a href={m.photo} target="_blank" rel="noreferrer"><img src={m.photo} alt="Foto" className="h-10 w-10 rounded-lg object-cover" /></a>
+                          ? <ZoomImage src={m.photo} alt="Foto de progreso" className="h-10 w-10 rounded-lg object-cover" />
                           : <span className="text-slate-400">-</span>}
                       </td>
                     </tr>

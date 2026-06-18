@@ -56,6 +56,28 @@ export function ImageUpload({ value, onChange, hint = 'Se reduce automaticamente
   );
 }
 
+// Imagen que al tocarla se abre grande (pantalla completa, imagen completa sin recortar).
+export function ZoomImage({ src, alt = '', className = '' }) {
+  const [open, setOpen] = useState(false);
+  if (!src) return null;
+  return (
+    <>
+      <img src={src} alt={alt} onClick={() => setOpen(true)}
+           className={`${className} cursor-zoom-in`} />
+      {open && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/85 p-4"
+             onClick={() => setOpen(false)}>
+          <img src={src} alt={alt} className="max-h-[90vh] max-w-[95vw] rounded-xl object-contain" />
+          <button onClick={() => setOpen(false)} title="Cerrar"
+                  className="absolute right-4 top-4 rounded-full bg-white/15 p-2 text-white hover:bg-white/30">
+            <IconX />
+          </button>
+        </div>
+      )}
+    </>
+  );
+}
+
 // Construye un enlace de WhatsApp (wa.me) con mensaje. Asume Colombia (57) para celulares de 10 digitos.
 export function whatsappLink(phone, text) {
   let digits = String(phone || '').replace(/\D/g, '');

@@ -4,7 +4,7 @@
 // ============================================================
 import { useEffect, useState } from 'react';
 import api from '../api/client';
-import { Modal, Spinner, Empty, money, ImageUpload } from '../components/ui';
+import { Modal, Spinner, Empty, money, ImageUpload, ZoomImage } from '../components/ui';
 import { IconPlus, IconEdit, IconTrash, IconBox } from '../components/Icons';
 
 export default function Products() {
@@ -65,7 +65,7 @@ export default function Products() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {list.map((p) => (
             <div key={p.id} className="card overflow-hidden p-5">
-              {p.image && <img src={p.image} alt={p.name} className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none object-cover" />}
+              {p.image && <ZoomImage src={p.image} alt={p.name} className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none object-cover" />}
               <div className="flex items-start justify-between">
                 <div className="grid h-11 w-11 place-items-center rounded-xl bg-brand/15 text-brand"><IconBox className="w-6 h-6" /></div>
                 <div className="flex gap-1">

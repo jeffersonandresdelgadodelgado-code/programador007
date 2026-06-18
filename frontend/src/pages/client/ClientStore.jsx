@@ -4,7 +4,7 @@
 // ============================================================
 import { useEffect, useState } from 'react';
 import api from '../../api/client';
-import { Spinner, Empty, money } from '../../components/ui';
+import { Spinner, Empty, money, ZoomImage } from '../../components/ui';
 import { IconBox } from '../../components/Icons';
 
 export default function ClientStore() {
@@ -25,7 +25,7 @@ export default function ClientStore() {
           {list.map((p) => (
             <div key={p.id} className="card overflow-hidden p-5">
               {p.image
-                ? <img src={p.image} alt={p.name} className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none object-cover" />
+                ? <ZoomImage src={p.image} alt={p.name} className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none object-cover" />
                 : <div className="grid h-11 w-11 place-items-center rounded-xl bg-brand/15 text-brand"><IconBox className="w-6 h-6" /></div>}
               <h3 className="mt-3 font-bold">{p.name}</h3>
               <span className="badge-warn">{p.category}</span>

@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api/client';
 import { useAuth } from '../context/AuthContext';
-import { Modal, Spinner, Empty, fdate, ImageUpload } from '../components/ui';
+import { Modal, Spinner, Empty, fdate, ImageUpload, ZoomImage } from '../components/ui';
 import { IconPlus, IconEdit, IconTrash, IconCalendar } from '../components/Icons';
 
 export default function Events() {
@@ -64,7 +64,7 @@ export default function Events() {
             return (
               <div key={ev.id} className={`card overflow-hidden p-5 ${past ? 'opacity-60' : ''}`}>
                 {ev.image && (
-                  <img src={ev.image} alt={ev.title} className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none object-cover" />
+                  <ZoomImage src={ev.image} alt={ev.title} className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none object-cover" />
                 )}
                 <div className="flex items-start justify-between">
                   <span className="badge-warn">{ev.type}</span>
