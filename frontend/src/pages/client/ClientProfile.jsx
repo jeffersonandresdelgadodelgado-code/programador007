@@ -46,7 +46,9 @@ export default function ClientProfile() {
 
       <div className="card p-6">
         <div className="flex items-center gap-4">
-          <div className="grid h-16 w-16 place-items-center rounded-2xl bg-brand/15 text-brand"><IconUser className="w-8 h-8" /></div>
+          {c.photo
+            ? <img src={c.photo} alt={c.full_name} className="h-16 w-16 rounded-2xl object-cover" />
+            : <div className="grid h-16 w-16 place-items-center rounded-2xl bg-brand/15 text-brand"><IconUser className="w-8 h-8" /></div>}
           <div>
             <h2 className="text-xl font-bold">{c.full_name}</h2>
             <p className="text-slate-500">Cedula: {c.cedula}</p>

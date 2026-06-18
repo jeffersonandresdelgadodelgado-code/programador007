@@ -4,7 +4,7 @@
 // ============================================================
 import { useEffect, useState } from 'react';
 import api from '../api/client';
-import { Modal, Spinner, Empty, money } from '../components/ui';
+import { Modal, Spinner, Empty, money, ImageUpload } from '../components/ui';
 import { IconPlus, IconEdit, IconTrash, IconBox } from '../components/Icons';
 
 export default function Products() {
@@ -13,7 +13,7 @@ export default function Products() {
   const [open, setOpen] = useState(false);
   const [sellFor, setSellFor] = useState(null);
   const [editing, setEditing] = useState(null);
-  const empty = { name: '', category: 'Camiseta', description: '', price: 0, stock: 0 };
+  const empty = { name: '', category: 'Camiseta', description: '', price: 0, stock: 0, image: '' };
   const [form, setForm] = useState(empty);
   const [sale, setSale] = useState({ quantity: 1, client_id: '' });
   const [saving, setSaving] = useState(false);
@@ -31,7 +31,7 @@ export default function Products() {
   async function save(e) {
     e.preventDefault(); setSaving(true);
     try {
-      const payload = { ...form, price: Number(form.price), stock: Number(form.stock) };
+      const payload = { ...form, price: Number(form.price), stock: Number(form.stock), image: form.image || null };
       if (editing) await api.put(`/products/${editing}`, payload);
       else await api.post('/products', payload);
       setOpen(false); await load();
@@ -64,7 +64,8 @@ export default function Products() {
       {!list ? <Spinner /> : list.length === 0 ? <Empty>No hay productos.</Empty> : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {list.map((p) => (
-            <div key={p.id} className="card p-5">
+            <div key={p.id} className="card overflow-hidden p-5">
+              {p.image && <img src={p.image} alt={p.name} className="-mx-5 -mt-5 mb-4 h-40 w-[calc(100%+2.5rem)] max-w-none object-cover" />}
               <div className="flex items-start justify-between">
                 <div className="grid h-11 w-11 place-items-center rounded-xl bg-brand/15 text-brand"><IconBox className="w-6 h-6" /></div>
                 <div className="flex gap-1">
@@ -100,6 +101,7 @@ export default function Products() {
           </div>
           <div><label className="label">Stock</label><input type="number" className="input" value={form.stock} onChange={set('stock')} /></div>
           <div><label className="label">Descripcion</label><textarea className="input" rows="2" value={form.description} onChange={set('description')} /></div>
+          <div><label className="label">Imagen del producto (opcional)</label><ImageUpload value={form.image} onChange={(v) => setForm((f) => ({ ...f, image: v }))} /></div>
           <div className="flex justify-end gap-2">
             <button type="button" className="btn-ghost" onClick={() => setOpen(false)}>Cancelar</button>
             <button className="btn-primary" disabled={saving}>{saving ? 'Guardando...' : 'Guardar'}</button>

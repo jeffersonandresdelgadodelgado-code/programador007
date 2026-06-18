@@ -4,8 +4,14 @@
 // ============================================================
 import { useEffect, useState } from 'react';
 import api from '../api/client';
-import { Modal, Spinner, Empty, money, fdate } from '../components/ui';
-import { IconPlus, IconAlert, IconTrash } from '../components/Icons';
+import { Modal, Spinner, Empty, money, fdate, whatsappLink } from '../components/ui';
+import { IconPlus, IconAlert, IconTrash, IconChat } from '../components/Icons';
+
+// Mensaje de recordatorio de pago listo para enviar por WhatsApp
+function reminderText(a) {
+  const verbo = a.status === 'Vencido' ? 'vencio' : 'vence';
+  return `Hola ${a.full_name}, te recordamos que tu mensualidad en Box Motivacion CrossFit ${verbo} el ${fdate(a.due_date)}. Te esperamos para renovarla. 💪🦍`;
+}
 
 // Suma meses a una fecha ISO y devuelve ISO
 function addMonth(iso, n = 1) {
@@ -67,12 +73,27 @@ export default function Payments() {
           <div className="mb-2 flex items-center gap-2 font-bold text-amber-700 dark:text-amber-300">
             <IconAlert className="w-5 h-5" /> Alertas de vencimiento ({alerts.length})
           </div>
-          <div className="flex flex-wrap gap-2">
-            {alerts.map((a) => (
-              <span key={a.id} className={`badge ${a.status === 'Vencido' ? 'badge-bad' : 'badge-warn'}`}>
-                {a.full_name} · vence {fdate(a.due_date)}
-              </span>
-            ))}
+          <div className="space-y-2">
+            {alerts.map((a) => {
+              const link = whatsappLink(a.phone, reminderText(a));
+              return (
+                <div key={a.id} className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-slate-800 px-3 py-2">
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold">{a.full_name}</p>
+                    <p className="text-xs text-slate-500">
+                      <span className={a.status === 'Vencido' ? 'text-red-500 font-semibold' : 'text-amber-500 font-semibold'}>{a.status}</span>
+                      {' '}· vence {fdate(a.due_date)}
+                    </p>
+                  </div>
+                  {link ? (
+                    <a href={link} target="_blank" rel="noreferrer"
+                       className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-600">
+                      <IconChat className="w-4 h-4" /> WhatsApp
+                    </a>
+                  ) : <span className="shrink-0 text-xs text-slate-400">sin telefono</span>}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

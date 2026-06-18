@@ -2,7 +2,67 @@
 //  Pequenos componentes de interfaz reutilizables
 // ============================================================
 import { useState } from 'react';
-import { IconX, IconEye, IconEyeOff } from './Icons';
+import { IconX, IconEye, IconEyeOff, IconTrash } from './Icons';
+
+// Reduce y comprime una imagen en el navegador antes de subirla,
+// para que pese poco (max ~1000px, JPEG calidad 0.7). Devuelve un data URL base64.
+export function resizeImage(file, maxSize = 1000, quality = 0.7) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > height && width > maxSize) { height = Math.round((height * maxSize) / width); width = maxSize; }
+        else if (height > maxSize) { width = Math.round((width * maxSize) / height); height = maxSize; }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Control reutilizable para subir una imagen (con vista previa y boton para quitarla).
+// value = data URL (o ''); onChange recibe el nuevo data URL o '' al quitar.
+export function ImageUpload({ value, onChange, hint = 'Se reduce automaticamente para que pese poco.', round = false }) {
+  async function pick(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try { onChange(await resizeImage(file)); } catch { alert('No se pudo procesar la imagen'); }
+  }
+  return (
+    <div>
+      {value ? (
+        <div className="relative inline-block">
+          <img src={value} alt="Vista previa"
+               className={round ? 'h-24 w-24 rounded-full object-cover' : 'max-h-48 w-full rounded-xl object-cover'} />
+          <button type="button" onClick={() => onChange('')} title="Quitar imagen"
+                  className="absolute right-2 top-2 rounded-lg bg-black/60 p-2 text-white hover:bg-red-600">
+            <IconTrash className="w-4 h-4" />
+          </button>
+        </div>
+      ) : (
+        <input type="file" accept="image/*" onChange={pick}
+               className="block w-full text-sm text-slate-500 file:mr-3 file:rounded-lg file:border-0 file:bg-brand file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-brand-500" />
+      )}
+      <p className="mt-1 text-xs text-slate-400">{hint}</p>
+    </div>
+  );
+}
+
+// Construye un enlace de WhatsApp (wa.me) con mensaje. Asume Colombia (57) para celulares de 10 digitos.
+export function whatsappLink(phone, text) {
+  let digits = String(phone || '').replace(/\D/g, '');
+  if (!digits) return null;
+  if (digits.length === 10 && digits.startsWith('3')) digits = '57' + digits;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+}
 
 // Campo de contrasena con boton para mostrar/ocultar el texto.
 // light=true -> fondo blanco con letra oscura y en negrita (para el login oscuro).

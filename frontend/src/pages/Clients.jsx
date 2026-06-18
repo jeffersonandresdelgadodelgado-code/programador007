@@ -4,12 +4,12 @@
 // ============================================================
 import { useEffect, useState } from 'react';
 import api from '../api/client';
-import { Modal, Spinner, Empty, fdate } from '../components/ui';
-import { IconPlus, IconEdit, IconTrash } from '../components/Icons';
+import { Modal, Spinner, Empty, fdate, ImageUpload } from '../components/ui';
+import { IconPlus, IconEdit, IconTrash, IconUser } from '../components/Icons';
 
 const empty = {
   cedula: '', full_name: '', phone: '', email: '', birth_date: '',
-  occupation: '', initial_weight: '', height: '', goal: '', join_date: '',
+  occupation: '', initial_weight: '', height: '', goal: '', join_date: '', photo: '',
 };
 
 export default function Clients() {
@@ -41,6 +41,7 @@ export default function Clients() {
         ...form,
         initial_weight: form.initial_weight ? Number(form.initial_weight) : null,
         height: form.height ? Number(form.height) : null,
+        photo: form.photo || null,
       };
       if (editing) await api.put(`/clients/${editing}`, payload);
       else await api.post('/clients', payload);
@@ -88,8 +89,16 @@ export default function Clients() {
               <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                 {list.map((c) => (
                   <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                    <td className="px-4 py-3 font-semibold">{c.full_name}
-                      <div className="text-xs font-normal text-slate-400">{c.email || 'sin correo'}</div>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        {c.photo
+                          ? <img src={c.photo} alt={c.full_name} className="h-9 w-9 rounded-full object-cover" />
+                          : <span className="grid h-9 w-9 place-items-center rounded-full bg-brand/15 text-brand"><IconUser className="w-5 h-5" /></span>}
+                        <div>
+                          <div className="font-semibold">{c.full_name}</div>
+                          <div className="text-xs text-slate-400">{c.email || 'sin correo'}</div>
+                        </div>
+                      </div>
                     </td>
                     <td className="px-4 py-3">{c.cedula}</td>
                     <td className="px-4 py-3 hidden md:table-cell">{c.phone || '-'}</td>
@@ -129,6 +138,7 @@ export default function Clients() {
           <div><label className="label">Estatura (cm)</label><input type="number" step="0.1" className="input" value={form.height} onChange={set('height')} /></div>
           <div><label className="label">Fecha de ingreso</label><input type="date" className="input" value={form.join_date || ''} onChange={set('join_date')} /></div>
           <div className="sm:col-span-2"><label className="label">Objetivo deportivo</label><textarea className="input" rows="2" value={form.goal || ''} onChange={set('goal')} /></div>
+          <div className="sm:col-span-2"><label className="label">Fotografia (opcional)</label><ImageUpload value={form.photo} onChange={(v) => setForm((f) => ({ ...f, photo: v }))} round /></div>
           {error && <p className="sm:col-span-2 rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-500">{error}</p>}
           <div className="sm:col-span-2 flex justify-end gap-2">
             <button type="button" className="btn-ghost" onClick={() => setOpen(false)}>Cancelar</button>

@@ -30,14 +30,14 @@ router.post('/', async (req, res) => {
   const clientId = resolveClientId(req);
   if (!clientId) return res.status(400).json({ error: 'Falta el cliente' });
   const info = await db.prepare(`
-    INSERT INTO measurements (client_id, date, weight, body_fat, muscle_mass, chest, waist, hip, arm, leg, notes)
-    VALUES (@client_id, @date, @weight, @body_fat, @muscle_mass, @chest, @waist, @hip, @arm, @leg, @notes)
+    INSERT INTO measurements (client_id, date, weight, body_fat, muscle_mass, chest, waist, hip, arm, leg, notes, photo)
+    VALUES (@client_id, @date, @weight, @body_fat, @muscle_mass, @chest, @waist, @hip, @arm, @leg, @notes, @photo)
   `).run({
     client_id: clientId,
     date: b.date || new Date().toISOString().slice(0, 10),
     weight: b.weight ?? null, body_fat: b.body_fat ?? null, muscle_mass: b.muscle_mass ?? null,
     chest: b.chest ?? null, waist: b.waist ?? null, hip: b.hip ?? null,
-    arm: b.arm ?? null, leg: b.leg ?? null, notes: b.notes ?? null,
+    arm: b.arm ?? null, leg: b.leg ?? null, notes: b.notes ?? null, photo: b.photo ?? null,
   });
   res.status(201).json(await db.prepare('SELECT * FROM measurements WHERE id = ?').get(info.lastInsertRowid));
 });

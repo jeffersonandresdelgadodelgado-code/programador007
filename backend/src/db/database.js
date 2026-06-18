@@ -35,6 +35,7 @@ await client.executeMultiple(schema);
 // Agrega columnas nuevas si faltan (ignora el error si ya estan).
 const migrations = [
   'ALTER TABLE events ADD COLUMN image TEXT',
+  'ALTER TABLE measurements ADD COLUMN photo TEXT',
 ];
 for (const sql of migrations) {
   try { await client.execute(sql); } catch { /* la columna ya existe */ }

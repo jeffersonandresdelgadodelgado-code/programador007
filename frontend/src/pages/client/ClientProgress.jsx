@@ -5,10 +5,10 @@
 import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import api from '../../api/client';
-import { Modal, Spinner, Empty, fdate } from '../../components/ui';
+import { Modal, Spinner, Empty, fdate, ImageUpload } from '../../components/ui';
 import { IconPlus, IconChart } from '../../components/Icons';
 
-const empty = { date: new Date().toISOString().slice(0, 10), weight: '', body_fat: '', muscle_mass: '', waist: '', chest: '', hip: '', arm: '', leg: '', notes: '' };
+const empty = { date: new Date().toISOString().slice(0, 10), weight: '', body_fat: '', muscle_mass: '', waist: '', chest: '', hip: '', arm: '', leg: '', notes: '', photo: '' };
 
 export default function ClientProgress() {
   const [list, setList] = useState(null);
@@ -26,7 +26,7 @@ export default function ClientProgress() {
     try {
       // convierte cadenas vacias en null y numeros donde aplica
       const payload = Object.fromEntries(Object.entries(form).map(([k, v]) =>
-        [k, v === '' ? null : (k === 'date' || k === 'notes' ? v : Number(v))]));
+        [k, v === '' ? null : (k === 'date' || k === 'notes' || k === 'photo' ? v : Number(v))]));
       await api.post('/progress', payload);
       setOpen(false); setForm(empty); await load();
     } finally { setSaving(false); }
@@ -88,6 +88,7 @@ export default function ClientProgress() {
                     <th className="px-4 py-3 font-semibold">% Grasa</th>
                     <th className="px-4 py-3 font-semibold">Musculo</th>
                     <th className="px-4 py-3 font-semibold hidden sm:table-cell">Cintura</th>
+                    <th className="px-4 py-3 font-semibold">Foto</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -98,6 +99,11 @@ export default function ClientProgress() {
                       <td className="px-4 py-3">{m.body_fat ?? '-'}</td>
                       <td className="px-4 py-3">{m.muscle_mass ?? '-'}</td>
                       <td className="px-4 py-3 hidden sm:table-cell">{m.waist ?? '-'}</td>
+                      <td className="px-4 py-3">
+                        {m.photo
+                          ? <a href={m.photo} target="_blank" rel="noreferrer"><img src={m.photo} alt="Foto" className="h-10 w-10 rounded-lg object-cover" /></a>
+                          : <span className="text-slate-400">-</span>}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -118,6 +124,7 @@ export default function ClientProgress() {
           <div><label className="label">Cadera (cm)</label><input type="number" step="0.1" className="input" value={form.hip} onChange={set('hip')} /></div>
           <div><label className="label">Brazo (cm)</label><input type="number" step="0.1" className="input" value={form.arm} onChange={set('arm')} /></div>
           <div><label className="label">Pierna (cm)</label><input type="number" step="0.1" className="input" value={form.leg} onChange={set('leg')} /></div>
+          <div className="col-span-2"><label className="label">Foto de progreso (opcional)</label><ImageUpload value={form.photo} onChange={(v) => setForm((f) => ({ ...f, photo: v }))} /></div>
           <div className="col-span-2 flex justify-end gap-2">
             <button type="button" className="btn-ghost" onClick={() => setOpen(false)}>Cancelar</button>
             <button className="btn-primary" disabled={saving}>{saving ? 'Guardando...' : 'Guardar'}</button>

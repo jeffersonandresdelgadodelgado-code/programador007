@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS measurements (
   arm           REAL,                 -- brazo (cm)
   leg           REAL,                 -- pierna (cm)
   notes         TEXT,
+  photo         TEXT,                 -- foto de progreso (data URL base64, opcional)
   created_at    TEXT    NOT NULL DEFAULT (datetime('now')),
   FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );
