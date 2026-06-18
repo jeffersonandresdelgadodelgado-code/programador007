@@ -15,6 +15,8 @@ import Events from './pages/Events';
 import Products from './pages/Products';
 import Attendance from './pages/Attendance';
 import Account from './pages/Account';
+import Wods from './pages/Wods';
+import ClientRecords from './pages/client/ClientRecords';
 
 // Paginas del cliente
 import ClientHome from './pages/client/ClientHome';
@@ -57,8 +59,12 @@ export default function App() {
       <Route path="/mi-progreso" element={<Protected role="cliente"><ClientProgress /></Protected>} />
       <Route path="/tienda" element={<Protected role="cliente"><ClientStore /></Protected>} />
 
+      {/* ---- Cliente: records ---- */}
+      <Route path="/mis-records" element={<Protected role="cliente"><ClientRecords /></Protected>} />
+
       {/* ---- Compartidas ---- */}
       <Route path="/eventos" element={<Protected><Events /></Protected>} />
+      <Route path="/wods" element={<Protected><Wods /></Protected>} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

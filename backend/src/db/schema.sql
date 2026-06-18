@@ -178,8 +178,52 @@ CREATE TABLE IF NOT EXISTS attendance (
 );
 
 -- ------------------------------------------------------------
+--  WODS (Workout of the Day) + RESULTADOS  (estilo CrossFit)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS wods (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  wod_date      TEXT    NOT NULL,                 -- fecha del WOD (yyyy-mm-dd)
+  title         TEXT    NOT NULL,                 -- nombre (ej. "Fran", "WOD del dia")
+  type          TEXT    DEFAULT 'For Time',       -- For Time / AMRAP / EMOM / Fuerza / Otro
+  description   TEXT,                             -- los movimientos del WOD
+  score_type    TEXT    DEFAULT 'time',           -- time / reps / weight / rounds (define el ranking)
+  created_at    TEXT    NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS wod_results (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  wod_id        INTEGER NOT NULL,
+  client_id     INTEGER NOT NULL,
+  score         TEXT    NOT NULL,                 -- "12:30", "150", "100"
+  rx            INTEGER NOT NULL DEFAULT 1,        -- 1 = RX, 0 = escalado
+  notes         TEXT,
+  created_at    TEXT    NOT NULL DEFAULT (datetime('now')),
+  UNIQUE (wod_id, client_id),
+  FOREIGN KEY (wod_id)    REFERENCES wods(id)    ON DELETE CASCADE,
+  FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+);
+
+-- ------------------------------------------------------------
+--  RECORDS PERSONALES (PR)  -  marcas del atleta
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS records (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_id     INTEGER NOT NULL,
+  exercise      TEXT    NOT NULL,                 -- "Back Squat", "Deadlift", "Fran"
+  value         REAL    NOT NULL,                 -- 100 (kg) o segundos
+  unit          TEXT    DEFAULT 'kg',             -- kg / lb / reps / seg
+  date          TEXT    NOT NULL DEFAULT (date('now')),
+  notes         TEXT,
+  created_at    TEXT    NOT NULL DEFAULT (datetime('now')),
+  FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+);
+
+-- ------------------------------------------------------------
 --  Indices utiles para reportes
 -- ------------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_wods_date           ON wods(wod_date);
+CREATE INDEX IF NOT EXISTS idx_wodresults_wod       ON wod_results(wod_id);
+CREATE INDEX IF NOT EXISTS idx_records_client       ON records(client_id);
 CREATE INDEX IF NOT EXISTS idx_payments_client    ON payments(client_id);
 CREATE INDEX IF NOT EXISTS idx_payments_due        ON payments(due_date);
 CREATE INDEX IF NOT EXISTS idx_measure_client      ON measurements(client_id);

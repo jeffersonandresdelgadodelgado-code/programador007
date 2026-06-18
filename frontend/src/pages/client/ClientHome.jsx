@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import api from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
 import { money, fdate } from '../../components/ui';
-import { IconMoney, IconDumbbell, IconChart, IconCalendar, IconCheck } from '../../components/Icons';
+import { IconMoney, IconDumbbell, IconChart, IconCalendar, IconCheck, IconFlame } from '../../components/Icons';
 
 export default function ClientHome() {
   const { user } = useAuth();
@@ -34,6 +34,7 @@ export default function ClientHome() {
   const vigente = pago?.status === 'Activo';
 
   const accesos = [
+    { to: '/wods', label: 'WOD de hoy', icon: IconFlame },
     { to: '/mis-rutinas', label: 'Mis rutinas', icon: IconDumbbell },
     { to: '/mi-progreso', label: 'Mi progreso', icon: IconChart },
     { to: '/mis-pagos', label: 'Mensualidad', icon: IconMoney },
